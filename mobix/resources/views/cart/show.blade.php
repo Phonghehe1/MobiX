@@ -35,4 +35,17 @@
     </table>
     <a href="{{ route('checkout') }}" class="btn btn-success">Thanh toán</a>
 @endsection
+@section('styles')
+    <style>
+        .navbar-nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .nav-item {
+            flex: 1;
+            text-align: center;
+        }
+    </style>
+@endsection
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
