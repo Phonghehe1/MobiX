@@ -2,9 +2,23 @@
 
 @section('content')
     <h2>Giỏ hàng của bạn</h2>
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+
+    <!-- Toast container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        @if (session('success'))
+            <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ session('success') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+    </div>
+
     <table class="table">
         <thead>
             <tr>
@@ -33,9 +47,13 @@
             @endforeach
         </tbody>
     </table>
-    <a href="{{ route('checkout') }}" class="btn btn-success">Thanh toán</a>
+
+    <!-- Nút thanh toán -->
+    <button id="checkoutButton" class="btn btn-success">Thanh toán</button>
 @endsection
+
 @section('styles')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .navbar-nav {
             display: flex;
@@ -46,6 +64,68 @@
             flex: 1;
             text-align: center;
         }
+        /* Toast */
+        .toast-container {
+            z-index: 1055;
+        }
+        .toast {
+            animation: slideInDown 0.5s ease-in-out;
+        }
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
     </style>
 @endsection
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('scripts')
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var toastEl = document.getElementById('successToast');
+                if (toastEl) {
+                    var toast = new bootstrap.Toast(toastEl, {
+                        autohide: true,
+                        delay: 3000
+                    });
+                    toast.show();
+                }
+            });
+        </script>
+    @endif
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkoutButton = document.getElementById('checkoutButton');
+            if (checkoutButton) {
+                checkoutButton.addEventListener('click', function () {
+                    Swal.fire({
+                        title: "Xác nhận thanh toán?",
+                        text: "Bạn có chắc chắn muốn thanh toán giỏ hàng này?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#28a745",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Có, thanh toán!",
+                        cancelButtonText: "Hủy"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{{ route('checkout') }}";
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+@endsection
+

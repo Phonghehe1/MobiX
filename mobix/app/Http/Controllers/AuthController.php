@@ -19,7 +19,12 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:6',
+        ], [
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không đúng định dạng.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -40,23 +45,33 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    // Xử lý đăng ký
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:6|confirmed',
+        ], [
+            'name.required' => 'Vui lòng nhập tên.',
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không đúng định dạng.',
+            'email.unique' => 'Email đã được sử dụng.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ]);
 
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->input('email'),
+            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user); // Sửa từ "Auth PRESENT::login" thành "Auth::login"
-        return redirect()->route('home')->with('success', 'Đăng ký thành công!');
+        // Không đăng nhập tự động, thay vào đó chuyển hướng về login
+        return redirect()->route('login')->with('success', 'Đăng ký thành công!')->with([
+            'registered_email' => $request->email,
+            'registered_password' => $request->password, // Lưu ý: Đây là mật khẩu gốc, không mã hóa
+        ]);
     }
 
     // Xử lý đăng xuất
