@@ -1,5 +1,7 @@
 <?php
-
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
@@ -29,3 +31,10 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add')->midd
 Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove')->middleware('auth');
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 Route::post('/order', [OrderController::class, 'store'])->name('order.store')->middleware('auth');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('products', AdminProductController::class);
+});
