@@ -40,7 +40,7 @@
                         <td>{{ $product->id }}</td>
                         <td>{{ $product->name }}</td>
                         <td><span class="badge bg-success">{{ number_format($product->price, 0, ',', '.') }} VND</span></td>
-                        <td><img src="{{ Storage::URL($product->image) }}" class="img-thumbnail" width="80"></td>
+                        <td><img src="{{ asset('storage/' . $product->image) }}" class="img-thumbnail" width="80"></td>
                         <td>{{ $product->category->name ?? 'Chưa phân loại' }}</td>
                         <td>
                             <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-info btn-sm">👁 Xem</a>

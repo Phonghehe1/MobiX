@@ -31,7 +31,7 @@ class ProductController extends Controller
 
     // Kiểm tra nếu có ảnh được tải lên
     if ($request->hasFile('image')) {
-        $path_image = $request->file('image')->store('images');
+        $path_image = $request->file('image')->store('images', 'public');
     }
     $data['image'] = $path_image ?? null;
 
