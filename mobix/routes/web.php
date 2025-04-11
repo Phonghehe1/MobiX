@@ -32,9 +32,8 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('car
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 Route::post('/order', [OrderController::class, 'store'])->name('order.store')->middleware('auth');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-
     Route::resource('categories', AdminCategoryController::class);
     Route::resource('products', AdminProductController::class);
 });
