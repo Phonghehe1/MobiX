@@ -19,8 +19,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="quantity" class="form-label">Số lượng</label>
-            <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $product->quantity }}" required>
+            <label for="stock" class="form-label">Số lượng</label>
+            <input type="number" class="form-control" id="stock" name="stock" value="{{ $product->stock }}" required>
         </div>
 
         <div class="mb-3">
