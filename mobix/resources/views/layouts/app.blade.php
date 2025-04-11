@@ -5,42 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MobiX</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     @yield('styles')
     @yield('scripts')
 </head>
 <body>
     <!-- Header -->
-    <header class="bg-light py-2">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-3">
-                    <a href="{{ route('home') }}">
-                        <h2>MobiX</h2>
+<header class="bg-light py-2">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-3">
+                <a href="{{ route('home') }}">
+                    <h2>MobiX</h2>
+                </a>
+            </div>
+            <div class="col-6">
+                <form action="{{ route('home') }}" method="GET">
+                    <div class="input-group">
+                        <input type="text" name="query" class="form-control" placeholder="Tìm kiếm sản phẩm..." value="{{ request('query') }}">
+                        <button class="btn btn-danger" type="submit">Tìm</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-3 text-end">
+                <div class="d-flex justify-content-end align-items-center gap-2">
+                    <a href="{{ route('cart.show') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-cart"></i> Giỏ hàng
                     </a>
-                </div>
-                <div class="col-6">
-                    <form action="{{ route('home') }}" method="GET">
-                        <div class="input-group">
-                            <input type="text" name="query" class="form-control" placeholder="Tìm kiếm sản phẩm..." value="{{ request('query') }}">
-                            <button class="btn btn-danger" type="submit">Tìm</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-3 text-end">
-                    <a href="{{ route('cart.show') }}" class="btn btn-outline-primary">Giỏ hàng</a>
                     @if (Auth::check())
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        <form action="{{ route('logout') }}" method="POST" class="m-0">
                             @csrf
-                            <button type="submit" class="btn btn-outline-secondary">Đăng xuất</button>
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-box-arrow-right"></i> Thoát
+                            </button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-outline-secondary">Đăng nhập</a>
-                        <a href="{{ route('register') }}" class="btn btn-outline-secondary">Đăng ký</a>
+                        <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                        </a>
+                        <a href="{{ route('register') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-person-plus"></i> Đăng ký
+                        </a>
                     @endif
                 </div>
             </div>
         </div>
-    </header>
+    </div>
+</header>
+
 
     <!-- Menu -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
