@@ -66,8 +66,9 @@ class ProductController extends Controller
             if ($product->image && Storage::exists($product->image)) {
                 Storage::delete($product->image);
             }
-            $data['image'] = $request->file('image')->store('product_images');
+            $path_image = $request->file('image')->store('images', 'public');
         }
+        $data['image'] = $path_image ?? null;
 
         $product->update($data);
 
