@@ -26,14 +26,32 @@ class OrderController extends Controller
         return view('admin.orders.edit', compact('order'));
     }
 
+    
     public function update(Request $request, $id)
     {
         $order = Order::findOrFail($id);
+    
+        $newStatus = $request->input('status');
+    
+        // Nếu đơn hàng hiện tại đã hoàn thành thì không cho thay đổi bất kỳ trạng thái nào khác
+        if ($order->status == 'completed' && $newStatus !== 'completed') {
+            return redirect()->back()->with('error', 'Đơn hàng đã hoàn thành, không thể thay đổi trạng thái!');
+        }
+    
+        // Nếu chuyển từ bất kỳ trạng thái nào sang "cancelled" mà đơn đã hoàn thành thì cấm
+        if ($order->status == 'completed' && $newStatus == 'cancelled') {
+            return redirect()->back()->with('error', 'Đơn hàng đã hoàn thành, không thể hủy!');
+        }
+    
         $order->update([
-            'status' => $request->status,
+            'status' => $newStatus,
         ]);
+    
         return redirect()->route('admin.orders.index')->with('message', 'Cập nhật trạng thái thành công');
     }
+    
+    
+
 
     public function destroy($id)
     {
