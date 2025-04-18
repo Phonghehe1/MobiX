@@ -198,6 +198,14 @@
                 opacity: 1;
             }
         }
+        .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0; /* tránh bị dịch xuống */
+    }
+
+    .dropdown-menu {
+        transition: all 0.2s ease;
+    }
     </style>
 @endsection
 @section('scripts')

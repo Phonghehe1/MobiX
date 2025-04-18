@@ -28,6 +28,9 @@
             margin-left: 250px;
             padding: 20px;
         }
+        .logout-form {
+            padding: 10px 15px;
+        }
     </style>
 </head>
 <body>
@@ -38,7 +41,16 @@
         <a href="{{ route('admin.dashboard') }}">Dashboard</a>
         <a href="{{ route('admin.products.index') }}">Quản lý sản phẩm</a>
         <a href="{{ route('admin.categories.index') }}">Danh mục</a>
+        <a href="{{ route('admin.orders.index') }}">Đơn hàng</a>
+        <a href="{{ route('admin.users.index') }}">Người dùng</a>
         <a href="#">Cài đặt</a>
+
+        <form action="{{ route('logout') }}" method="POST" class="logout-form mt-3">
+            @csrf
+            <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?')">
+                🚪 Đăng xuất
+            </button>
+        </form>
     </div>
 
     <!-- Nội dung chính -->

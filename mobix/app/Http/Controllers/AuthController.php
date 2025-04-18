@@ -16,36 +16,30 @@ class AuthController extends Controller
 
     // Xử lý đăng nhập
     public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|min:6',
-    ], [
-        'email.required' => 'Vui lòng nhập email.',
-        'email.email' => 'Email không đúng định dạng.',
-        'password.required' => 'Vui lòng nhập mật khẩu.',
-        'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
-    ]);
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ], [
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không đúng định dạng.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+        ]);
 
-    $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        $user = Auth::user();
-
-        // ✅ Kiểm tra nếu là admin thì chuyển hướng đến trang admin
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard')->with('success', 'Chào mừng quản trị viên!');
+            // 👉 Dù là admin hay user đều về trang chủ
+            return redirect()->route('home')->with('success', 'Đăng nhập thành công!');
         }
 
-        return redirect()->route('home')->with('success', 'Đăng nhập thành công!');
+        return back()->withErrors([
+            'email' => 'Email hoặc mật khẩu không đúng.',
+        ])->withInput();
     }
-
-    return back()->withErrors([
-        'email' => 'Email hoặc mật khẩu không đúng.',
-    ])->withInput();
-}
 
     // Hiển thị form đăng ký
     public function showRegisterForm()
